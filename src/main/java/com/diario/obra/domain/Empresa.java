@@ -20,7 +20,6 @@ import java.util.UUID;
 public class Empresa {
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @SequenceGenerator(allocationSize = 1, sequenceName = "s_empresa", name = "s_empresa")
     @Column(nullable = false, updatable = false)
     private UUID id;
 

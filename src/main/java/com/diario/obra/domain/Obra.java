@@ -21,7 +21,6 @@ public class Obra {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
-    @SequenceGenerator(allocationSize = 1, sequenceName = "s_obra", name = "s_obra")
     @Column(nullable = false, updatable = false)
     private UUID id;
 
