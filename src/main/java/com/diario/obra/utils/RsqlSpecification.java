@@ -20,17 +20,35 @@ public class RsqlSpecification<T> implements Specification<T> {
             CriteriaBuilder cb) {
 
         String field = node.getSelector();
-        String value = node.getArguments().get(0);
+        String value = node.getArguments().getFirst();
+
+        Path<String> path = getPath(root, field);
 
         return switch (node.getOperator().getSymbol()) {
             case "==" -> cb.like(
-                    cb.lower(root.get(field).as(String.class)),
+                    cb.lower(path.as(String.class)),
                     value.toLowerCase().replace("*", "%")
             );
-            case "!=" -> cb.notEqual(root.get(field), value);
+            case "!=" -> cb.notEqual(path, value);
             default -> throw new UnsupportedOperationException(
                     "Operador não suportado: " + node.getOperator()
             );
         };
     }
+
+    private Path<String> getPath(Root<?> root, String field) {
+        if (field.contains(".")) {
+            String[] parts = field.split("\\.");
+            Path<?> path = root;
+
+            for (String part : parts) {
+                path = path.get(part);
+            }
+
+            return (Path<String>) path;
+        }
+
+        return root.get(field);
+    }
+
 }
