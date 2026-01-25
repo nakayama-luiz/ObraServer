@@ -37,4 +37,11 @@ public class Empresa {
 
     @Column(name = "telefone")
     private String telefone;
+
+    public static Empresa of(UUID empresaId) {
+        Empresa empresa = new Empresa();
+        empresa.setId(empresaId);
+
+        return empresa;
+    }
 }

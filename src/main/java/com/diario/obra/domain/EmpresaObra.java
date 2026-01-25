@@ -28,4 +28,8 @@ public class EmpresaObra {
     @JoinColumn(name = "obra_id")
     private Obra obra;
 
+    public EmpresaObra(UUID obraId, UUID empresaId) {
+        this.empresa = Empresa.of(empresaId);
+        this.obra = Obra.of(obraId);
+    }
 }

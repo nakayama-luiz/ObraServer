@@ -1,5 +1,6 @@
 package com.diario.obra.resource;
 
+import com.diario.obra.domain.Empresa;
 import com.diario.obra.domain.EmpresaObra;
 import com.diario.obra.service.EmpresaObraService;
 import lombok.AllArgsConstructor;
@@ -43,5 +44,22 @@ public class EmpresaObraResource {
     @ResponseStatus(HttpStatus.NO_CONTENT)
     public void deletar(@PathVariable UUID id) {
         service.deletar(id);
+    }
+
+    @PostMapping("/obra/{obraId}/empresa/{empresaId}")
+    public ResponseEntity<EmpresaObra> relate(@PathVariable UUID obraId, @PathVariable UUID empresaId) {
+        return ResponseEntity.ok(service.relate(obraId, empresaId));
+    }
+
+    @GetMapping("/obra/{obraId}")
+    public ResponseEntity<Empresa> findEmpresaByObra(@PathVariable UUID obraId) {
+        return ResponseEntity.ok(service.findByObraId(obraId));
+    }
+
+    @DeleteMapping("/obra/{obraId}/empresa/{empresaId}")
+    public ResponseEntity<Void> unrelate(@PathVariable UUID obraId, @PathVariable UUID empresaId) {
+        service.unrelate(obraId, empresaId);
+
+        return ResponseEntity.ok().build();
     }
 }

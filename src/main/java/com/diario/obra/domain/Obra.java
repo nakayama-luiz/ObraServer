@@ -62,4 +62,11 @@ public class Obra {
 
     @Column(name = "qtd_funcionarios")
     private Integer qtdFuncionarios;
+
+    public static Obra of(UUID obraId) {
+        Obra obra = new Obra();
+        obra.setId(obraId);
+
+        return obra;
+    }
 }
