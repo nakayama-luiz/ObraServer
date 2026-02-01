@@ -70,4 +70,8 @@ public class EmpresaObraService {
         return Optional.ofNullable(empresaObra.getEmpresa())
                 .orElse(new Empresa());
     }
+
+    public EmpresaObra findOneByObraAndEmpresaId(UUID obraId) {
+        return repository.findByObraId(obraId);
+    }
 }

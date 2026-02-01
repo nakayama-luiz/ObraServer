@@ -4,6 +4,7 @@ import cz.jirutka.rsql.parser.ast.ComparisonNode;
 import org.springframework.data.jpa.domain.Specification;
 
 import jakarta.persistence.criteria.*;
+import java.util.UUID;
 
 public class RsqlSpecification<T> implements Specification<T> {
 
@@ -22,21 +23,36 @@ public class RsqlSpecification<T> implements Specification<T> {
         String field = node.getSelector();
         String value = node.getArguments().getFirst();
 
-        Path<String> path = getPath(root, field);
+        Path<?> path = getPath(root, field);
+        Class<?> fieldType = path.getJavaType();
 
         return switch (node.getOperator().getSymbol()) {
-            case "==" -> cb.like(
-                    cb.lower(path.as(String.class)),
-                    value.toLowerCase().replace("*", "%")
-            );
-            case "!=" -> cb.notEqual(path, value);
+            case "==" -> {
+                if (fieldType == UUID.class) {
+                    yield cb.equal(path, UUID.fromString(value));
+                } else if (fieldType == String.class) {
+                    yield cb.like(
+                            cb.lower(path.as(String.class)),
+                            value.toLowerCase().replace("*", "%")
+                    );
+                } else {
+                    yield cb.equal(path, value);
+                }
+            }
+            case "!=" -> {
+                if (fieldType == UUID.class) {
+                    yield cb.notEqual(path, UUID.fromString(value));
+                } else {
+                    yield cb.notEqual(path, value);
+                }
+            }
             default -> throw new UnsupportedOperationException(
                     "Operador não suportado: " + node.getOperator()
             );
         };
     }
 
-    private Path<String> getPath(Root<?> root, String field) {
+    private Path<?> getPath(Root<?> root, String field) {
         if (field.contains(".")) {
             String[] parts = field.split("\\.");
             Path<?> path = root;
@@ -45,7 +61,7 @@ public class RsqlSpecification<T> implements Specification<T> {
                 path = path.get(part);
             }
 
-            return (Path<String>) path;
+            return path;
         }
 
         return root.get(field);

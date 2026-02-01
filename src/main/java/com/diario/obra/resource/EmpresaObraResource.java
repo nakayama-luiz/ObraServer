@@ -62,4 +62,12 @@ public class EmpresaObraResource {
 
         return ResponseEntity.ok().build();
     }
+
+    @GetMapping("/find-relation")
+    public ResponseEntity<EmpresaObra> findByObraAndEmpresaId(
+            @RequestParam(value = "obraId") UUID obraId) {
+
+       return ResponseEntity.ofNullable(service.findOneByObraAndEmpresaId(obraId));
+    }
+
 }

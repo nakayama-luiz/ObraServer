@@ -19,4 +19,6 @@ public interface EmpresaObraRepository extends JpaRepository<EmpresaObra, UUID>,
     void deletByObraAndEmpresa(UUID obraId, UUID empresaId);
 
     void deleteByObraAndEmpresa(Obra obra, Empresa empresa);
+
+    EmpresaObra findOneByObraId(UUID obraId);
 }
