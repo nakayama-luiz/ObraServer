@@ -36,8 +36,9 @@ public class Funcionario {
     @JoinColumn(name = "empresa_id")
     private Empresa empresa;
 
-    @Column(name = "funcao_id")
-    private Long funcao;
+    @ManyToOne
+    @JoinColumn(name = "funcao_id")
+    private Funcao funcao;
 
     @Column(columnDefinition = "text")
     private String endereco;

@@ -65,10 +65,14 @@ public class ObraService {
             specification = RsqlSpecificationBuilder.build(search);
         }
 
-        if(Objects.isNull(specification)) {
+        if (Objects.isNull(specification)) {
             return obraRepository.findAll(pageable);
         }
 
         return obraRepository.findAll(specification, pageable);
+    }
+
+    public Integer findTotalFuncionarioByObra(UUID obraId) {
+        return obraRepository.findTotalFuncionarioByObra(obraId);
     }
 }

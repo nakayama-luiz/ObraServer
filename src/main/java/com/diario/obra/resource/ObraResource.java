@@ -53,4 +53,9 @@ public class ObraResource {
     public void deletar(@PathVariable UUID id) {
         obraService.deletar(id);
     }
+
+    @GetMapping("/funcionario/total/{obraId}")
+    public ResponseEntity<Integer> findTotalFuncionarioByObra(@PathVariable String obraId) {
+        return ResponseEntity.ofNullable(obraService.findTotalFuncionarioByObra(UUID.fromString(obraId)));
+    }
 }

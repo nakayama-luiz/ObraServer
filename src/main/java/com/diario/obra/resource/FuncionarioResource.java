@@ -3,7 +3,6 @@ package com.diario.obra.resource;
 import com.diario.obra.domain.Funcionario;
 import com.diario.obra.service.FuncionarioService;
 import lombok.AllArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
@@ -22,7 +21,6 @@ public class FuncionarioResource extends CrudResource<Funcionario, UUID> {
             @PathVariable UUID id,
             @RequestBody Funcionario funcionario
     ) {
-        Funcionario atualizado = funcionarioService.update(id, funcionario);
-        return ResponseEntity.ok(atualizado);
+        return ResponseEntity.ok(funcionarioService.update(id, funcionario));
     }
 }
